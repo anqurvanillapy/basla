@@ -2,19 +2,23 @@
 
 (load "untyped.scm")
 
-(define (ulc/load-lib)
-  (for-each (lambda (filename)
-              (ulc/eval (read (open-input-file filename)) '()))
-            (directory-read "*.ulc.basla")))
+(define (read-all)
+  (define (collect result)
+    (let ((obj (read)))
+      (if (eof-object? obj)
+           result
+           (collect (cons obj result)))))
+  (collect '()))
 
-(define (main-repl)
-  (let ()
-    (display "basla> ")
-    ;; TODO: STLC eval.
-    (display (ulc/eval (read) '()))
-    (newline)
-    (main-repl)))
+(define (ulc/include-lib)
+  (append-map (lambda (f)
+                (with-input-from-file f read-all))
+              (directory-read "*.basla")))
 
-(ulc/load-lib)
+(define (main-repl env)
+  (display "basla> ")
+  (display (ulc/eval (read) env))
+  (newline)
+  (main-repl env))
 
-(main-repl)
+(main-repl (ulc/include-lib))
