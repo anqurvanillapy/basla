@@ -1,3 +1,2 @@
-($ tr . ($ x . ($ y . x)))
-
-($ fl . ($ x . ($ y . y)))
+(def true   ($ n . ($ x . ($ y . x))))
+(def false  ($ n . ($ x . ($ y . y))))
