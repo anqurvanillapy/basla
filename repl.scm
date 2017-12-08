@@ -5,7 +5,10 @@
 (define (main-repl env lib)
   (display "basla> ")
   (ignore-errors
-    (lambda () (display (car (ulc/eval (read) env lib)))))
+    (lambda ()
+      (let ((result (car (ulc/eval (read) env lib))))
+        (display "=> ")
+        (display result))))
   (newline)
   (main-repl env lib))
 

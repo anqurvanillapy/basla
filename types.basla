@@ -1,2 +1,2 @@
-(def true   ($ n . ($ x . ($ y . x))))
-(def false  ($ n . ($ x . ($ y . y))))
+(def true   ($ x . ($ y . x)))
+(def false  ($ x . ($ y . y)))
