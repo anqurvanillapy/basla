@@ -5,9 +5,17 @@
     ((null? e) env)
     ((symbol? e) (cadr (assq e env)))
     ((eq? (car e) '$) (cons e env))
+    (else (ulc/apply-helper e env lib))))
+
+(define (ulc/apply-helper e env lib)
+  (cond
     ((symbol? (car e))
      (ulc/apply (ulc/eval (cadr (assq (car e) lib)) env lib)
                 (ulc/eval (cadr e) env lib)
+                lib))
+    ((symbol? (cadr e))
+     (ulc/apply (ulc/eval (car e) env lib)
+                (ulc/eval (cadr (assq (cadr e) lib)) env lib)
                 lib))
     (else (ulc/apply (ulc/eval (car e) env lib)
                      (ulc/eval (cadr e) env lib)
