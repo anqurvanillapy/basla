@@ -1,23 +1,14 @@
-#lang racket
+#lang racket/base
 
-(define (ulc/eval e env)
-  (cond
-    ((null? e) env)
-    ((symbol? e) (cadr (assq e env)))
-    ((eq? (car e) '$) (cons e env))
-    (else
-      (ulc/apply (ulc/eval (car e) env)
-                 (ulc/eval (cadr e) env)))))
+(require "eval.rkt")
 
-(define (ulc/apply env x)
-  (let ((f (car env)))
-    (ulc/eval (cddr f)
-              (cons (list (cadr f) x) (cdr env)))))
+(define VERSION "v0.1.0")
 
-(define (ulc/repl)
+(define (prtm-repl)
   (display "氕> ")
-  (display (ulc/eval (read) '()))
-  (newline)
-  (ulc/repl))
+  (displayln (prtm-eval (read) '()))
+  (prtm-repl))
 
-(ulc/repl)
+(displayln (string-append "Protium " VERSION))
+
+(prtm-repl)
